@@ -1,25 +1,43 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useForm, SubmitHandler } from "react-hook-form";
+
+
+type Inputs = {
+    text:string;
+}
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+ 
+    const { register, handleSubmit, setValue} = useForm<Inputs>();
+    
+    const onSubmit: SubmitHandler<Inputs> = (data) => { 
+        console.log(data.text);
+    } 
+
+    const changeTextValue = (value: string) => {
+    setValue("text", value);
+  };
+
+    return (
+        <>
+      <form onSubmit={handleSubmit(onSubmit)} style={{ margin: "50px" }}>
+        <input {...register("text")} style={{ margin: "20px" }} />
+        <input type="submit" />
+        <div>
+          {["orange", "grape", "banana"].map((value) => {
+            return (
+              <button
+                style={{ margin: "10px" }}
+                key={value}
+                onClick={() => changeTextValue(value)}
+              >
+                {value}
+              </button>
+            );
+          })}
+        </div>
+      </form>
+    </>
   );
 }
 
